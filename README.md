@@ -1,3 +1,4 @@
+https://bnu-engpsy-fall26.github.io/wangpengbo202411998146-2/
 # 工程心理学作业二：经典注意实验的复现与改进
 
 两个经典心理学实验的在线复现与**改进条件检验**。纯前端实现（HTML + CSS + JavaScript），
