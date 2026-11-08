@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cleveland–McGill 图形知觉实验</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="index.html">
+        <span class="brand-mark">实</span>
+        <span>工程心理学实验</span>
+        <span class="brand-sub">作业二 · W6 / W7</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">首页</a>
+        <a href="flanker.html">实验一</a>
+        <a href="cleveland.html" class="active">实验二</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div id="stepper"></div>
+    <div id="app">
+
+      <!-- 介绍 -->
+      <section id="s-intro" class="card" style="display:none;">
+        <h1>实验二：Cleveland–McGill 图形知觉实验</h1>
+        <p class="lead">
+          Cleveland &amp; McGill (1984) · <em>JASA</em>, 79(387), 531–554
+        </p>
+
+        <p>
+          本实验复现不同<strong>图形编码形式</strong>影响数量比例判断准确性的经典效应，并检验另一种呈现方式：
+          给饼图增加 <strong>.25 / .5 / .75 角度参考刻度</strong>，是否能改善比例判断准确性。
+        </p>
+        <p>
+          每个试次会显示一个包含<strong>五个数值</strong>的图表（柱状图或饼图）。图中会标出
+          <strong>最大数值</strong>对应的元素，以及<strong>需要比较的较小数值</strong>对应的元素。
+          你需要判断：<strong>较小数值大约是最大数值的百分之多少？</strong>
+        </p>
+        <p>
+          请在输入框中填写一个 0–100 的数字作为估计，然后提交。请凭视觉判断，不要长时心算。
+        </p>
+
+        <div class="note info">
+          三种图形条件会混合出现：<strong>共同尺度柱状图</strong>、<strong>普通饼图</strong>、
+          <strong>带角度参考刻度的饼图</strong>。三种条件使用可比较的比例分布。
+        </div>
+
+        <p class="muted small" id="intro-trials">
+          整个实验约 4–6 分钟，共 48 个正式试次（另有 6 个练习试次）。
+        </p>
+
+        <div class="btn-row">
+          <button class="btn lg" id="intro-next">下一步：知情同意</button>
+        </div>
+      </section>
+
+      <!-- 知情同意 -->
+      <section id="s-consent" class="card" style="display:none;">
+        <h2>知情同意</h2>
+        <ul class="small" style="color:var(--text-2);padding-left:20px;line-height:1.9;">
+          <li>本实验为《工程心理学》课程作业，用于研究图形知觉与比例判断。</li>
+          <li>实验<strong>完全匿名</strong>，仅记录随机匿名编号，不收集个人身份信息。</li>
+          <li>参与完全自愿，可随时关闭网页退出。</li>
+          <li>数据仅用于课程教学与统计分析。</li>
+        </ul>
+
+        <label class="checkbox-row" for="consent-check">
+          <input type="checkbox" id="consent-check">
+          <span>我已阅读并理解以上说明，自愿参加本实验。</span>
+        </label>
+
+        <div class="btn-row">
+          <button class="btn" id="consent-next" disabled>同意并继续</button>
+        </div>
+      </section>
+
+      <!-- 匿名编号 -->
+      <section id="s-id" class="card" style="display:none;">
+        <h2>被试匿名编号</h2>
+        <p>系统将生成随机匿名编号。两个实验可使用同一编号，数据会按实验标识区分。</p>
+        <div class="field">
+          <label for="pid-input">匿名编号</label>
+          <input type="text" id="pid-input" maxlength="20" autocomplete="off" spellcheck="false">
+          <div class="hint">建议格式：P01、S12 或任意可识别的编号。</div>
+        </div>
+        <div class="btn-row">
+          <button class="btn ghost" id="pid-random">随机生成</button>
+          <button class="btn" id="id-next">继续</button>
+        </div>
+      </section>
+
+      <!-- 指导语 -->
+      <section id="s-instructions" class="card" style="display:none;">
+        <h2>任务指导语</h2>
+        <ol class="small" style="padding-left:20px;line-height:1.9;">
+          <li>屏幕显示一个图表，包含五个数值。</li>
+          <li>图中<strong>用红色标出最大数值</strong>，<strong>用蓝色标出需要比较的较小数值</strong>。</li>
+          <li>请判断：较小数值大约是最大数值的百分之多少？</li>
+          <li>在输入框填写 0–100 的数字，点击「提交」或按 Enter。</li>
+          <li>请凭视觉快速判断，不要精确测量或长时间计算。</li>
+        </ol>
+
+        <div class="note info">
+          图表不会显示具体数值标签，请根据图形本身的长度（柱状图）或角度/面积（饼图）来估计比例。
+          带刻度的饼图会额外提供角度参考线，便于你对角度位置。
+        </div>
+
+        <!-- 可选注视记录 -->
+        <div class="settings-panel" style="margin-top:22px;">
+          <h3>可选：眼动记录</h3>
+          <p class="small muted" style="margin-top:0;">
+            本实验可以额外记录注视位置，用于计算图表呈现期间注视中央区域的比例。
+            该功能<strong>默认关闭</strong>，需要摄像头权限，仅记录汇总比例（不保存任何画面或坐标）。
+          </p>
+          <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+            <label class="checkbox-row" for="gaze-toggle" style="margin:0;flex:1;min-width:240px;">
+              <input type="checkbox" id="gaze-toggle">
+              <span>开启眼动记录（需摄像头，可选）</span>
+            </label>
+            <span class="gaze-pill" id="gaze-status"><span class="led"></span><span id="gaze-status-text">未开启</span></span>
+          </div>
+          <p class="tiny muted" id="gaze-hint" style="margin:8px 0 0;"></p>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn lg" id="inst-next">进入练习</button>
+        </div>
+      </section>
+
+      <!-- 练习 -->
+      <section id="s-practice" class="card" style="display:none;">
+        <h2>练习阶段</h2>
+        <p class="muted small">
+          练习共 6 个试次，会给出正确答案反馈；正式实验不提供反馈。准备好后开始。
+        </p>
+        <div class="note info">练习的目的是让你熟悉如何用图形的长度或角度来估计比例。</div>
+        <div class="btn-row">
+          <button class="btn lg" id="practice-start">开始练习</button>
+        </div>
+      </section>
+
+      <!-- 练习后过渡 -->
+      <section id="s-practice-done" class="card" style="display:none;">
+        <h2>练习完成</h2>
+        <p id="practice-summary"></p>
+        <div class="note">
+          进入正式实验后<strong>不再给出答案反馈</strong>，请保持一致的判断方式。
+        </div>
+        <div class="btn-row">
+          <button class="btn lg gold" id="formal-start">开始正式实验</button>
+        </div>
+      </section>
+
+      <!-- 正式实验 -->
+      <section id="s-formal" class="card" style="display:none;">
+        <div class="progress-meta">
+          <span id="formal-count"></span>
+          <span id="formal-pct" class="tiny"></span>
+        </div>
+        <div class="progress-wrap"><div class="progress-fill" id="formal-progress" style="width:0%;"></div></div>
+
+        <div id="chart-area" class="chart-box" style="text-align:center;min-height:330px;display:flex;align-items:center;justify-content:center;"></div>
+
+        <div class="field" style="text-align:center;margin-top:18px;">
+          <label for="estimate-input">较小数值约是最大数值的百分之多少？（0–100）</label>
+          <input type="number" id="estimate-input" min="0" max="100" step="1"
+                 style="max-width:180px;text-align:center;font-size:19px;font-weight:700;">
+          <div class="hint" style="text-align:center;">输入后按 Enter 或点击提交</div>
+        </div>
+        <div class="btn-row center">
+          <button class="btn lg" id="submit-estimate">提交</button>
+        </div>
+        <p class="small" id="feedback" style="text-align:center;margin-top:14px;min-height:22px;"></p>
+      </section>
+
+      <!-- 结果 -->
+      <section id="s-result" class="card" style="display:none;">
+        <h1>实验二 · 结果</h1>
+        <div id="result-body"></div>
+
+        <div class="btn-row">
+          <button class="btn" id="export-csv">导出 CSV</button>
+          <button class="btn green" id="upload-now">提交数据</button>
+          <a class="btn ghost" href="index.html">返回首页</a>
+        </div>
+        <div class="upload-status" id="upload-status"></div>
+      </section>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p style="margin:0;">
+      <strong>Cleveland–McGill 图形知觉实验</strong> ｜ Cleveland &amp; McGill (1984) ·
+      <em>JASA</em>, 79(387), 531–554 ｜ 刻度依据：Hollands &amp; Dyre (2000)
+    </p>
+  </footer>
+
+  <script src="js/config.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/gaze.js"></script>
+  <script src="js/cleveland.js"></script>
+</body>
+</html>
